@@ -8,18 +8,15 @@ st.set_page_config(page_title="Advance Perubatan", layout="wide")
 # =========================
 # PATHS
 # =========================
-EXCEL_FILE = Path(
-    r"C:\Users\nabil\OneDrive\My Document\Aset dan tuntutan\2025\Advance perubatan"
-    r"\Report Advance Perubatan latest 2 (update kaler).xlsx"
-)
-
-CSV_DIR = EXCEL_FILE.parent / "csv_export"
+BASE_DIR = Path(__file__).parent
+CSV_DIR = BASE_DIR / "csv_export"
 
 CSV_FILES = {
     "Jadual Advance Perubatan": CSV_DIR / "Jadual_Advance_Perubatan_Update.csv",
     "Beri Advance Detail": CSV_DIR / "Beri_Advance_Detail.csv",
     "Bayar Balik Advance Detail": CSV_DIR / "Bayar_Balik_Advance_Detail.csv",
 }
+
 
 # =========================
 # HELPERS
@@ -124,7 +121,7 @@ def normalize_id_staf(series: pd.Series) -> pd.Series:
 # =========================
 st.title("Jadual Advance Perubatan")
 
-last_updated = file_mtime(EXCEL_FILE) or max(
+last_updated = max(
     [t for t in (file_mtime(p) for p in CSV_FILES.values()) if t],
     default=None
 )
