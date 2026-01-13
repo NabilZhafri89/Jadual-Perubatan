@@ -2,6 +2,8 @@ import pandas as pd
 import streamlit as st
 from pathlib import Path
 from datetime import datetime
+from zoneinfo import ZoneInfo
+
 
 st.set_page_config(page_title="Advance Perubatan", layout="wide")
 
@@ -22,7 +24,11 @@ CSV_FILES = {
 # HELPERS
 # =========================
 def file_mtime(path: Path):
-    return datetime.fromtimestamp(path.stat().st_mtime) if path.exists() else None
+    if not path.exists():
+        return None
+    ts = datetime.fromtimestamp(path.stat().st_mtime, tz=ZoneInfo("UTC"))
+    return ts.astimezone(ZoneInfo("Asia/Kuala_Lumpur"))
+
 
 def clean_common(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
